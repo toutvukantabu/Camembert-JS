@@ -65,6 +65,8 @@ class PieChart extends HTMLElement {
       );
       path.setAttribute("fill", color);
       pathGroup.appendChild(path);
+      path.addEventListener('mouseover', ()=> this.handlePathOver(k))
+      path.addEventListener('mouseout', ()=> this.handlePathOut(k))
       return path;
     });
     // line separation
@@ -93,7 +95,7 @@ class PieChart extends HTMLElement {
         :host {
             display: block;
             position : relative;
-            padding: 50px;
+           
         }
         svg {
             width : 100%;
@@ -114,7 +116,14 @@ class PieChart extends HTMLElement {
             padding : .1em .2em;
             transform : translate(-50%,-50%);
             background-color: var(--tooltip-bg,#FFF);
-        }`;
+            opacity:0;
+            transition: opacity .3s;
+
+        }
+        .is-active{
+          opacity:1;
+        }
+        `;
         shadow.appendChild(style);
         shadow.appendChild(svg);
     }
@@ -142,7 +151,10 @@ class PieChart extends HTMLElement {
       this.lines[k].setAttribute("x2", start.x);
       this.lines[k].setAttribute("y2", start.y);
       const ratio = (this.data[k] / total) * progress;
-      this.positionLabel(this.labels[k], angle + ratio * Math.PI);
+      if(progress === 1){
+        this.positionLabel(this.labels[k], angle + ratio * Math.PI);
+
+      }
 
       angle += ratio * 2 * Math.PI;
       const end = Point.fromAngle(angle);     
@@ -152,6 +164,16 @@ class PieChart extends HTMLElement {
       );
       start = end;
     }
+}
+
+handlePathOver(k){
+this.labels[k]?.classList.add('is-active')
+
+}
+
+handlePathOut(k){
+this.labels[k]?.classList.remove('is-active')
+
 }
 /**
  * Position the label correctly according to the angle 
@@ -163,8 +185,8 @@ if(!label || !angle){
   return;
 }
 const point = Point.fromAngle(angle)
-label.style.setProperty('top',`${ (point.y *0.5+0.5) * 100 }%`)
-label.style.setProperty('left',`${ (point.x * 0.5 + 0.5) * 100 }%`);
+label.style.setProperty('top',`${ (point.y  *0.5+0.5) * 100 }%`)
+label.style.setProperty('left',`${ (point.x * 0.5+0.5) * 100 }%`);
 }
   
 }
