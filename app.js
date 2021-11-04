@@ -142,7 +142,7 @@ class PieChart extends HTMLElement {
       this.lines[k].setAttribute("x2", start.x);
       this.lines[k].setAttribute("y2", start.y);
       const ratio = (this.data[k] / total) * progress;
-      this.positionLabel(this.labels[k], angle + ratio * Math.Pi);
+      this.positionLabel(this.labels[k], angle + ratio * Math.PI);
 
       angle += ratio * 2 * Math.PI;
       const end = Point.fromAngle(angle);     
