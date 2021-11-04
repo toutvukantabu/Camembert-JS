@@ -4,6 +4,11 @@ pie-chart{
     height: 500px;
 
 }
+.pie-chart-box{
+
+padding: 50px;
+
+}
 body{
     background-color: gray;
     font-family: sans-serif;
